@@ -16,8 +16,16 @@ for(const name of ['index.html','downloads.html','fourier-series.html']){
   }
   if(name==='fourier-series.html'){
     assert.equal((html.match(/class="source-section"/g)||[]).length,48);
-    assert.equal((html.match(/class="card newbie-note"/g)||[]).length,44);
-    assert.equal((html.match(/class="katex"/g)||[]).length,122);
+    assert.equal((html.match(/class="card newbie-note"/g)||[]).length,0);
+    assert.equal((html.match(/class="reading-path beginner-reading"/g)||[]).length,44);
+    assert.equal((html.match(/class="reading-path standard-reading"/g)||[]).length,44);
+    assert((html.match(/class="katex"/g)||[]).length>200,'Missing rendered equations');
+    for (const section of html.split('<section class="source-section"').slice(1)) {
+      const page=Number(section.match(/id="slide-(\d+)"/)[1]);
+      if ([1,29,31,33,48].includes(page)) continue;
+      assert(section.includes('class="reading-path beginner-reading"'),`Missing beginner page ${page}`);
+      assert(section.includes('class="reading-path standard-reading"'),`Missing standard page ${page}`);
+    }
     const ordered=['overview','concept-map','concept-summary',...Array.from({length:48},(_,i)=>`slide-${String(i+1).padStart(2,'0')}`),'exam-english','glossary','asr-log','sources'];
     let previous=-1;
     for(const id of ordered){const index=html.indexOf(`id="${id}"`);assert(index>previous,`wrong order ${id}`);previous=index;}
@@ -38,4 +46,4 @@ for(const name of ['index.html','downloads.html','fourier-series.html']){
     }
   }
 }
-console.log(`SITE_VALIDATION_OK pages=3 slides=48 newbie_cards=44 equations=122 local_links=${links}`);
+console.log(`SITE_VALIDATION_OK pages=3 slides=48 independent_reading_pairs=44 local_links=${links}`);

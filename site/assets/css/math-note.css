@@ -7,6 +7,10 @@
 .newbie-note h3 { color:var(--crimson-deep); }
 .evidence-label { display:inline-block; font-size:12px; padding:2px 8px; border:1px solid var(--hairline-strong); border-radius:4px; color:var(--mute); }
 .js[data-mode="standard"] .newbie-note { display:none; }
+.reading-path { display:grid; gap:20px; min-width:0; }
+.reading-path__label { margin:0; font-size:13px; font-weight:700; color:var(--crimson-deep); }
+.js[data-mode="standard"] .beginner-reading,
+.js[data-mode="newbie"] .standard-reading { display:none; }
 .math-block { max-width:100%; overflow-x:auto; overflow-y:hidden; padding:8px 2px; margin:12px 0; color:var(--ink); }
 .note-stack { grid-template-columns:minmax(0,1fr); }
 .note-stack > *, .card, .callout, .exam-card, .quiet-card, .solution-steps { min-width:0; }

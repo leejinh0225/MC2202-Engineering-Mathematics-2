@@ -2,6 +2,7 @@ from pathlib import Path
 import re, html, shutil, json
 from note_content import PAGES,p,m,c,n,steps
 from home_page import render_home
+from reading_paths import source_body, summary_body
 ROOT=Path(__file__).resolve().parents[1]
 SITE=ROOT/'site'
 template=(SITE/'templates/lecture-page.template.html').read_text(encoding='utf-8')
@@ -17,12 +18,14 @@ summary+=c('급수의 합과 원래 함수가 같아지는 조건',p('이 자료
 summary+=c('복소수·반구간·고유함수도 같은 원리입니다.',p('Complex form(복소수 형식)은 사인과 코사인을 eⁱⁿωᵗ로 묶는 표기입니다. Half-range expansion(반구간 전개)은 주어진 오른쪽 구간을 짝연장·홀연장해서 각각 코사인·사인 급수로 표현합니다. Sturm–Liouville problem(스튀름–리우빌 문제)의 적절한 경계조건은 서로 직교하는 eigenfunctions(고유함수)를 만들어 줍니다. 기저가 완비하면 빠진 성분이 없어 Parseval’s equality(파르세발 등식)가 성립하고, 그렇지 않으면 잔차가 남을 수 있습니다.'))
 summary+=n('기호를 읽기 위한 작은 출발점',p('n은 1,2,3,…으로 움직이는 번호, aₙ은 n번째 계수입니다. π는 약 3.14159이고 2π rad은 한 바퀴입니다. ∫는 작은 값들을 촘촘하게 더하는 integration(적분), Σ는 번호를 바꾸며 항을 더하는 summation(합)을 뜻합니다. y′는 기울기, y″는 기울기의 변화율입니다.')+p('처음에는 모든 공식을 한꺼번에 외우지 않아도 됩니다. “기본 파동의 크기를 내적으로 추출한다”는 한 줄을 먼저 잡고, 각 페이지의 예시 숫자와 계산 단계를 따라가십시오. 뉴비 모드는 같은 용어를 유지하면서 필요한 고등학교 수학을 그 자리에서 다시 설명합니다.'))
 
+summary=summary_body(summary)
+
 match=re.search(r'        <section class="source-section".*?</section>',template,re.S)
 source_template=match.group(0)
 sections=[]
 for i,page in enumerate(PAGES,1):
     s=source_template
-    replacements={'NN':f'{i:02}','SLIDE_ROLE':page['role'],'SLIDE_HEADING':page['title'],'LECTURE_SLUG':'fourier','DESCRIPTIVE_ALT_TEXT':f"Fourier series 원본 PDF {i}쪽: {page['title']}",'CURRENT_PAGE':str(i),'PAGE_COUNT':'48','TRANSCRIPT_TIME_OR_SLIDE_ROLE':'원본 PDF · 본문 해설은 편집자 작성','SLIDE_EXPLANATION_BLOCKS':page['body']}
+    replacements={'NN':f'{i:02}','SLIDE_ROLE':page['role'],'SLIDE_HEADING':page['title'],'LECTURE_SLUG':'fourier','DESCRIPTIVE_ALT_TEXT':f"Fourier series 원본 PDF {i}쪽: {page['title']}",'CURRENT_PAGE':str(i),'PAGE_COUNT':'48','TRANSCRIPT_TIME_OR_SLIDE_ROLE':'원본 PDF · 본문 해설은 편집자 작성','SLIDE_EXPLANATION_BLOCKS':source_body(i,page['body'])}
     for key,value in replacements.items(): s=s.replace('{{'+key+'}}',value)
     sections.append(s)
 template=template[:match.start()]+'\n'.join(sections)+template[match.end():]
@@ -68,8 +71,8 @@ for key,value in replace.items():template=template.replace('{{'+key+'}}',value)
 template=template.replace('MC2103 Dynamics','MC2202 Engineering Mathematics II').replace('| MC2103','| MC2202')
 template=template.replace('이 부분만 읽어도 렉처의 핵심 정의, 개념 관계, 가정과 풀이 흐름을 이해할 수 있도록 작성합니다.','이 요약은 정의·공식·가정·풀이 순서를 한 흐름으로 연결합니다. 각 페이지의 상세 해설과 풀이도 아래에 모두 수록했습니다.')
 template=template.replace('<span class="header-meta">Fourier series · Fourier series</span>','<button type="button" class="mode-toggle" id="mode-toggle" aria-pressed="false">뉴비 모드 켜기</button>')
-template=template.replace('</head>','<link rel="stylesheet" href="assets/vendor/katex/katex.min.css"><link rel="stylesheet" href="assets/css/math-note.css?v=home-3"><script src="assets/js/mode-init.js"></script></head>')
-template=template.replace('<div class="page-shell">','<div class="mode-guide"><strong id="mode-status">기본 모드 · 밝은 화면</strong><p>상단 뉴비 모드를 켜면 다크 화면으로 전환되고, 고등학교 수학부터 연결하는 부연 설명이 추가됩니다. 핵심 용어와 기본 해설·문제 풀이는 두 모드에서 같습니다.</p><noscript>JavaScript가 꺼져 있어 모든 뉴비 해설을 함께 표시합니다.</noscript></div><div class="page-shell">')
+template=template.replace('</head>','<link rel="stylesheet" href="assets/vendor/katex/katex.min.css"><link rel="stylesheet" href="assets/css/math-note.css?v=newbie-4"><script src="assets/js/mode-init.js"></script></head>')
+template=template.replace('<div class="page-shell">','<div class="mode-guide"><strong id="mode-status">기본 모드 · 밝은 화면</strong><p>뉴비 모드를 켜면 다크 화면과 함께 본문이 기초부터 풀어 쓴 해설로 바뀝니다. 개념이 필요한 이유, 계산을 선택한 이유, 중간 과정과 결과의 의미를 이어 설명합니다. 원본 순서와 English(한국어 번역) 용어 표기는 유지합니다.</p><noscript>JavaScript가 꺼져 있어 모든 뉴비 해설을 함께 표시합니다.</noscript></div><div class="page-shell">')
 template=template.replace('</body>','<script src="assets/js/math-note.js" defer></script></body>')
 # Repeated bilingual terminology in beginner cards, retaining existing bilingual phrases.
 mapping={'정규직교':'orthonormal(정규직교)','짝함수':'even function(짝함수)','홀함수':'odd function(홀함수)','부분적분':'integration by parts(부분적분)','내적':'inner product(내적)','적분':'integration(적분)','직교성':'orthogonality(직교성)','고유값':'eigenvalue(고유값)','경계조건':'boundary condition(경계조건)','계수':'coefficient(계수)','사인':'sine(사인)','코사인':'cosine(코사인)'}
@@ -87,7 +90,7 @@ template=template.replace('assets/css/styles.css','assets/css/styles.css?v=mc220
 if re.search(r'\{\{.*?\}\}',template):raise RuntimeError('Unresolved template token')
 (SITE/'fourier-series.html').write_text('\n'.join(line.rstrip() for line in template.splitlines())+'\n',encoding='utf-8')
 
-def shell(title,body):return '<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>'+title+' | MC2202</title><link rel="stylesheet" href="assets/css/styles.css"><link rel="stylesheet" href="assets/css/math-note.css?v=home-3"><script src="assets/js/mode-init.js"></script></head><body><header class="site-header"><div class="site-header__inner"><a class="wordmark" href="index.html">MC2202 Engineering Mathematics II</a><div class="header-actions"><a class="header-link" href="downloads.html">PDF 다운로드</a><button class="mode-toggle" id="mode-toggle" aria-pressed="false" type="button">뉴비 모드 켜기</button></div></div></header><section class="hero"><div class="hero__inner"><p class="eyebrow">공업수학 II · 강의자료 정리노트</p><h1>'+title+'</h1><p class="hero__lead">원본 자료와 한국어 해설, 단계별 문제 풀이를 이어 읽는 학습 노트.</p></div></section><main class="landing-content">'+body+'</main><footer class="site-footer"><div class="site-footer__inner">MC2202 · Engineering Mathematics II</div></footer><script src="assets/js/math-note.js" defer></script></body></html>'
+def shell(title,body):return '<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>'+title+' | MC2202</title><link rel="stylesheet" href="assets/css/styles.css"><link rel="stylesheet" href="assets/css/math-note.css?v=newbie-4"><script src="assets/js/mode-init.js"></script></head><body><header class="site-header"><div class="site-header__inner"><a class="wordmark" href="index.html">MC2202 Engineering Mathematics II</a><div class="header-actions"><a class="header-link" href="downloads.html">PDF 다운로드</a><button class="mode-toggle" id="mode-toggle" aria-pressed="false" type="button">뉴비 모드 켜기</button></div></div></header><section class="hero"><div class="hero__inner"><p class="eyebrow">공업수학 II · 강의자료 정리노트</p><h1>'+title+'</h1><p class="hero__lead">원본 자료와 한국어 해설, 단계별 문제 풀이를 이어 읽는 학습 노트.</p></div></section><main class="landing-content">'+body+'</main><footer class="site-footer"><div class="site-footer__inner">MC2202 · Engineering Mathematics II</div></footer><script src="assets/js/math-note.js" defer></script></body></html>'
 lecture_card = '<article class="lecture-card"><div class="lecture-card__body"><span class="status-pill">작성 완료</span><p class="section-kicker" style="margin-top:22px">공업수학 II · 날짜 미기재</p><h2>Fourier series(푸리에 급수)</h2>'+p('내적과 직교성에서 시작해 푸리에 급수, 함수 근사, Sturm–Liouville 문제와 일반화된 급수까지 상세 해설과 풀이로 연결합니다.')+'<div class="meta-row"><span class="meta-chip">원본 슬라이드 48장</span><span class="meta-chip">PDF 기반 해설</span><span class="meta-chip">기본·뉴비 모드</span></div><div class="button-row"><a class="button button--primary" href="fourier-series.html">정리노트 읽기</a><a class="button" href="fourier-series.html#slide-28">문제 풀이</a><a class="button" href="materials/Fourier series.pdf" download="Fourier series.pdf" type="application/pdf">원본 PDF 다운로드</a></div></div><div class="lecture-card__image"><img src="assets/slides/fourier/slide-01.jpg" alt="Fourier series 원본 첫 페이지 표지 슬라이드" width="1920" height="1080"></div></article>'
 (SITE/'index.html').write_text(render_home(shell,lecture_card),encoding='utf-8')
 size=(SITE/'materials/Fourier series.pdf').stat().st_size

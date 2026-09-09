@@ -7,15 +7,21 @@
       button.setAttribute('aria-pressed', String(beginner));
       button.textContent = beginner ? '뉴비 모드 켜짐 · 기본으로' : '뉴비 모드 켜기';
     }
-    if (status) status.textContent = beginner ? '뉴비 모드 · 다크 화면 + 기초 부연 설명' : '기본 모드 · 밝은 화면';
+    if (status) status.textContent = beginner ? '뉴비 모드 · 이유부터 풀어 읽는 해설' : '기본 모드 · 밝은 화면';
     drawWave();
   }
   button?.addEventListener('click', () => {
+    const section = [...document.querySelectorAll('.source-section, #concept-summary')].find(el => {
+      const rect = el.getBoundingClientRect();
+      return rect.top < 150 && rect.bottom > 150;
+    });
+    const previousTop = section?.getBoundingClientRect().top;
     const mode = document.documentElement.dataset.mode === 'newbie' ? 'standard' : 'newbie';
     document.documentElement.dataset.mode = mode;
     document.documentElement.style.colorScheme = mode === 'newbie' ? 'dark' : 'light';
     try { localStorage.setItem('mc2202-reading-mode',mode); } catch (_) {}
     sync();
+    if (section) window.scrollBy(0, section.getBoundingClientRect().top - previousTop);
     window.dispatchEvent(new Event('resize'));
   });
   window.addEventListener('storage', e => {
