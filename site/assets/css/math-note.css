@@ -27,6 +27,7 @@
 [data-mode="newbie"] { --ink:#f2eeee; --body:#d3cdcd; --mute:#b0a8a8; --canvas:#18181b; --canvas-soft:#111113; --canvas-soft-2:#222225; --accent-soft:#2e2223; --accent-border:#654042; --hairline:#353539; --hairline-strong:#777077; --crimson:#ff8c84; --crimson-deep:#ffaaa3; --crimson-dark:#ffc5bf; --positive:#8adbb0; --warning:#e8ba7b; --shadow-1:0 1px 4px #0004; --shadow-2:0 4px 20px #0004; }
 [data-mode="newbie"] .site-header { background:#18181bf5; border-color:var(--hairline); }
 [data-mode="newbie"] .hero { background:linear-gradient(120deg,#291819,#161618); }
+[data-mode="newbie"] .hero::after { background:linear-gradient(90deg,#18181bf2 0%,#18181bd8 56%,#18181ba8 100%); }
 [data-mode="newbie"] .hero h1, [data-mode="newbie"] .hero__lead, [data-mode="newbie"] .hero .eyebrow { color:var(--ink); }
 [data-mode="newbie"] .card, [data-mode="newbie"] .exam-card, [data-mode="newbie"] .quiet-card, [data-mode="newbie"] .course-map__card { background:var(--canvas); color:var(--body); border-color:var(--hairline); }
 [data-mode="newbie"] .callout, [data-mode="newbie"] .answer { background:var(--accent-soft); color:var(--ink); border-color:var(--accent-border); }
