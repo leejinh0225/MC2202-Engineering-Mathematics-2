@@ -17,6 +17,11 @@
 .solution-steps>li { padding:8px 0 12px 4px; }
 .solution-steps>li::marker { font-weight:700; color:var(--crimson-deep); }
 .landing-content { max-width:1000px; padding:40px 24px 80px; margin:auto; display:grid; gap:24px; }
+.home-reading { margin-top:72px; }
+.home-main .lecture-card__image { display:flex; align-items:center; background:#171b23; }
+.home-main .lecture-card__image img { height:auto; aspect-ratio:16 / 9; object-fit:contain; display:block; }
+.home-main .lecture-card__body { min-width:0; }
+[data-mode="newbie"] .status-pill { background:#20382c; color:#8adbb0; }
 .wave-demo input { display:block; width:100%; accent-color:var(--crimson); margin:20px 0; }
 .wave-demo label { font-weight:600; }
 .wave-demo output { color:var(--crimson-deep); padding-left:12px; }
