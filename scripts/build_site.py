@@ -3,6 +3,7 @@ import re, html, shutil, json
 from note_content import PAGES,p,m,c,n,steps
 from home_page import render_home
 from reading_paths import source_body, summary_body
+from source_review import source_review, source_review_index
 ROOT=Path(__file__).resolve().parents[1]
 SITE=ROOT/'site'
 template=(SITE/'templates/lecture-page.template.html').read_text(encoding='utf-8')
@@ -25,7 +26,7 @@ source_template=match.group(0)
 sections=[]
 for i,page in enumerate(PAGES,1):
     s=source_template
-    replacements={'NN':f'{i:02}','SLIDE_ROLE':page['role'],'SLIDE_HEADING':page['title'],'LECTURE_SLUG':'fourier','DESCRIPTIVE_ALT_TEXT':f"Fourier series 원본 PDF {i}쪽: {page['title']}",'CURRENT_PAGE':str(i),'PAGE_COUNT':'48','TRANSCRIPT_TIME_OR_SLIDE_ROLE':'원본 PDF · 본문 해설은 편집자 작성','SLIDE_EXPLANATION_BLOCKS':source_body(i,page['body'])}
+    replacements={'NN':f'{i:02}','SLIDE_ROLE':page['role'],'SLIDE_HEADING':page['title'],'LECTURE_SLUG':'fourier','DESCRIPTIVE_ALT_TEXT':f"Fourier series 원본 PDF {i}쪽: {page['title']}",'CURRENT_PAGE':str(i),'PAGE_COUNT':'48','TRANSCRIPT_TIME_OR_SLIDE_ROLE':'원본 PDF · 본문 해설은 편집자 작성','SLIDE_EXPLANATION_BLOCKS':source_review(i)+source_body(i,page['body'])}
     for key,value in replacements.items(): s=s.replace('{{'+key+'}}',value)
     sections.append(s)
 template=template[:match.start()]+'\n'.join(sections)+template[match.end():]
@@ -64,7 +65,7 @@ audits=[
 audit='<p>원본의 수식·그림을 확인하고 다시 계산한 기록입니다. 원본 이미지의 오류는 덮어쓰지 않으며, 아래와 본문에서 교정합니다. 강사의 구두 설명이나 시험 출제 의도는 추정하지 않습니다.</p><table class="compare-table"><thead><tr><th>PDF 쪽</th><th>원본 확인 사항</th><th>해설의 처리</th></tr></thead><tbody>'+''.join('<tr><td>'+a+'</td><td>'+b+'</td><td>'+d+'</td></tr>' for a,b,d in audits)+'</tbody></table>'
 sources='<div class="card">'+p('<a href="materials/Fourier%20series.pdf" download="Fourier series.pdf">Fourier series.pdf</a> · Arshad Afzal · 48쪽. 주차·수업 날짜 미기재. 원본의 전 페이지를 순서대로 보존했습니다.')+p('본문의 설명·유도·완성 풀이와 뉴비 설명은 원본을 바탕으로 작성한 편집자 해설입니다. 원문에 없는 추가 예제·가정·검산은 편집자 보강으로 구분했습니다.')+p('표준 공식 대조: <a href="https://dlmf.nist.gov/1.8">NIST DLMF §1.8 · Fourier series</a> (계수 규약·수렴 조건), <a href="https://dlmf.nist.gov/18.3">§18.3 · Orthogonal polynomials</a> (Legendre 표기·노름), <a href="https://dlmf.nist.gov/10.22">§10.22 · Bessel integrals</a> (고정 차수의 가중 직교성). 외부 자료의 a₀/2 규약은 이 노트의 a₀ 규약으로 바꾸어 비교했습니다.')+'</div>'
 toc=[('overview','단원 개요'),('concept-map','개념 지도'),('concept-summary','핵심 개념 요약')]+[(f'slide-{i:02}',f'{i:02} · '+v['title']) for i,v in enumerate(PAGES,1)]+[('exam-english','시험 영어'),('glossary','핵심 용어'),('asr-log','원본 검토·교정'),('sources','출처')]
-replace={'LECTURE_NUMBER':'Fourier series','LECTURE_TITLE':'Fourier series','ONE_SENTENCE_DESCRIPTION':'공업수학 II 푸리에 급수: 원본 48쪽, 상세 풀이, 기본·뉴비 모드의 한국어 수업 대체 노트','WEEK':'공업수학 II','LECTURE_PROMISE':'함수의 좌표를 내적으로 구하는 원리부터 푸리에 급수와 고유값 문제까지. 원본 옆의 상세 해설과 완성 풀이로 공부합니다.','DATE_OR_날짜_미기재':'미기재','PAGE_COUNT':'48','VIDEO_SET':'PDF 기반 · 강의 영상 없음','ALL_CONTENTS_AND_PROBLEM_SOLVING_BUTTONS':'','ORIGINAL_PDF_URL':'materials/Fourier series.pdf','LECTURE_NOTE_FILENAME':'Fourier series.pdf','CORE_RELATIONSHIP_HEADLINE':overview,'CORE_RELATIONSHIP_EXPLANATION':'Inner product(내적)에서 시작해 orthogonal expansion(직교 전개)의 원리를 익히고, 주기·대칭·경계조건에 맞는 함수를 조립합니다. 원본의 모든 페이지와 상세 문제 풀이를 한 문서에서 이어 읽을 수 있습니다.','CONCEPT_MAP_HEADLINE':'내적 → 푸리에 계수 → 주기·대칭 → 고유함수','CONCEPT_MAP_BLOCKS':conceptmap,'STANDALONE_CONCEPT_SUMMARY':summary,'DISTINCT_SUMMARY_VIDEO_SECTION_IF_NEEDED':'','EXAM_SECTION_TITLE':'개념을 설명하고 풀이를 서술하는 영어 문장','BILINGUAL_GLOSSARY_TABLE':glossary,'AUDIT_SECTION_TITLE':'원본 검토·교정 기록 · 스크립트 없음','ASR_CORRECTION_TABLE':audit,'SOURCE_LIST_AND_PROVENANCE_NOTE':sources,'TABLE_OF_CONTENTS_LINKS':''.join(f'<li><a href="#{key}">{label}</a></li>' for key,label in toc)}
+replace={'LECTURE_NUMBER':'Fourier series','LECTURE_TITLE':'Fourier series','ONE_SENTENCE_DESCRIPTION':'공업수학 II 푸리에 급수: 원본 48쪽, 상세 풀이, 기본·뉴비 모드의 한국어 수업 대체 노트','WEEK':'공업수학 II','LECTURE_PROMISE':'함수의 좌표를 내적으로 구하는 원리부터 푸리에 급수와 고유값 문제까지. 원본 옆의 상세 해설과 완성 풀이로 공부합니다.','DATE_OR_날짜_미기재':'미기재','PAGE_COUNT':'48','VIDEO_SET':'PDF 기반 · 강의 영상 없음','ALL_CONTENTS_AND_PROBLEM_SOLVING_BUTTONS':'','ORIGINAL_PDF_URL':'materials/Fourier series.pdf','LECTURE_NOTE_FILENAME':'Fourier series.pdf','CORE_RELATIONSHIP_HEADLINE':overview,'CORE_RELATIONSHIP_EXPLANATION':'Inner product(내적)에서 시작해 orthogonal expansion(직교 전개)의 원리를 익히고, 주기·대칭·경계조건에 맞는 함수를 조립합니다. 원본의 모든 페이지와 상세 문제 풀이를 한 문서에서 이어 읽을 수 있습니다.','CONCEPT_MAP_HEADLINE':'내적 → 푸리에 계수 → 주기·대칭 → 고유함수','CONCEPT_MAP_BLOCKS':conceptmap,'STANDALONE_CONCEPT_SUMMARY':summary,'DISTINCT_SUMMARY_VIDEO_SECTION_IF_NEEDED':'','EXAM_SECTION_TITLE':'개념을 설명하고 풀이를 서술하는 영어 문장','BILINGUAL_GLOSSARY_TABLE':glossary,'AUDIT_SECTION_TITLE':'원본 검토·교정 기록 · 스크립트 없음','ASR_CORRECTION_TABLE':source_review_index()+audit,'SOURCE_LIST_AND_PROVENANCE_NOTE':sources,'TABLE_OF_CONTENTS_LINKS':''.join(f'<li><a href="#{key}">{label}</a></li>' for key,label in toc)}
 start=template.index('            <div class="exam-card">',template.index('id="exam-english"'))
 end=template.index('\n          </div>',start)
 template=template[:start]+exam+template[end:]
