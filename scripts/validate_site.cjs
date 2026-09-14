@@ -1,7 +1,11 @@
 const fs=require('fs'),path=require('path'),assert=require('assert');
 const root=path.resolve(__dirname,'../site');
 let links=0;
-for(const name of ['index.html','downloads.html','fourier-series.html']){
+const lectures={
+  'fourier-series.html':{pages:48, pairs:44, slug:'fourier', shared:[1,29,31,33,48], equations:200},
+  'fourier-integrals-transforms.html':{pages:36, pairs:34, slug:'transforms', shared:[1,12,35], equations:150},
+};
+for(const name of ['index.html','downloads.html',...Object.keys(lectures)]){
   const html=fs.readFileSync(path.join(root,name),'utf8');
   const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
   assert.equal(ids.length,new Set(ids).size,`${name}: duplicate ID`);
@@ -13,26 +17,31 @@ for(const name of ['index.html','downloads.html','fourier-series.html']){
     if(url.startsWith('#')){assert(ids.includes(url.slice(1)),`${name}: missing ${url}`);continue;}
     const target=path.resolve(root,decodeURIComponent(url.split(/[?#]/)[0]));
     assert(fs.existsSync(target),`${name}: missing ${url}`);links++;
+    if(url.includes('#') && target.endsWith('.html')) {
+      const linked=fs.readFileSync(target,'utf8');
+      assert(linked.includes(`id="${url.split('#')[1]}"`),`${name}: missing target anchor ${url}`);
+    }
   }
-  if(name==='fourier-series.html'){
-    assert.equal((html.match(/class="source-section"/g)||[]).length,48);
+  if(lectures[name]){
+    const lecture=lectures[name];
+    assert.equal((html.match(/class="source-section"/g)||[]).length,lecture.pages);
     assert.equal((html.match(/class="card newbie-note"/g)||[]).length,0);
-    assert.equal((html.match(/class="reading-path beginner-reading"/g)||[]).length,44);
-    assert.equal((html.match(/class="reading-path standard-reading"/g)||[]).length,44);
-    assert((html.match(/class="katex"/g)||[]).length>200,'Missing rendered equations');
+    assert.equal((html.match(/class="reading-path beginner-reading"/g)||[]).length,lecture.pairs);
+    assert.equal((html.match(/class="reading-path standard-reading"/g)||[]).length,lecture.pairs);
+    assert((html.match(/class="katex"/g)||[]).length>lecture.equations,'Missing rendered equations');
     for (const section of html.split('<section class="source-section"').slice(1)) {
       const page=Number(section.match(/id="slide-(\d+)"/)[1]);
-      if ([1,29,31,33,48].includes(page)) continue;
+      if (lecture.shared.includes(page)) continue;
       assert(section.includes('class="reading-path beginner-reading"'),`Missing beginner page ${page}`);
       assert(section.includes('class="reading-path standard-reading"'),`Missing standard page ${page}`);
     }
-    const ordered=['overview','concept-map','concept-summary',...Array.from({length:48},(_,i)=>`slide-${String(i+1).padStart(2,'0')}`),'exam-english','glossary','asr-log','sources'];
+    const ordered=['overview','concept-map','concept-summary',...Array.from({length:lecture.pages},(_,i)=>`slide-${String(i+1).padStart(2,'0')}`),'exam-english','glossary','asr-log','sources'];
     let previous=-1;
     for(const id of ordered){const index=html.indexOf(`id="${id}"`);assert(index>previous,`wrong order ${id}`);previous=index;}
     assert(/class="editorial-section" id="exam-english"/.test(html));
-    for(let i=1;i<=48;i++){
+    for(let i=1;i<=lecture.pages;i++){
       const name=`slide-${String(i).padStart(2,'0')}.jpg`;
-      const jpeg=fs.readFileSync(path.join(root,'assets/slides/fourier',name));
+      const jpeg=fs.readFileSync(path.join(root,'assets/slides',lecture.slug,name));
       let size;
       for(let p=2;p<jpeg.length;){
         if(jpeg[p]!==0xff){p++;continue;}
@@ -45,5 +54,12 @@ for(const name of ['index.html','downloads.html','fourier-series.html']){
       assert.deepEqual(size,[1920,1080],`${name}: unexpected dimensions`);
     }
   }
+  if(name==='index.html') {
+    assert.equal((html.match(/class="lecture-card"/g)||[]).length,Object.keys(lectures).length);
+    for(const [file,v] of Object.entries(lectures)) {
+      assert(html.includes(`href="${file}"`));
+      assert(html.includes(`assets/slides/${v.slug}/slide-01.jpg`));
+    }
+  }
 }
-console.log(`SITE_VALIDATION_OK pages=3 slides=48 independent_reading_pairs=44 local_links=${links}`);
+console.log(`SITE_VALIDATION_OK pages=4 slides=84 independent_reading_pairs=78 local_links=${links}`);

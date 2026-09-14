@@ -1,0 +1,8 @@
+.table-wrap { overflow-x:auto; max-width:100%; }
+.note-stack pre { white-space:pre; overflow:auto; max-width:100%; padding:20px; border:1px solid var(--hairline); border-radius:8px; background:var(--canvas-soft-2); color:var(--ink); font-size:13px; line-height:1.7; }
+.transform-demo { min-width:0; }
+.transform-demo canvas { display:block; width:100%; height:auto; border:1px solid var(--hairline); border-radius:8px; margin:14px 0; }
+.transform-demo label { display:block; font-weight:600; color:var(--ink); margin-top:12px; }
+.transform-demo output { display:inline-block; min-width:3em; margin-left:12px; color:var(--crimson-deep); }
+.transform-demo input[type=range] { width:100%; accent-color:var(--crimson); margin:16px 0; }
+@media print { .transform-demo input { display:none; } .note-stack pre { white-space:pre-wrap; font-size:10px; } }

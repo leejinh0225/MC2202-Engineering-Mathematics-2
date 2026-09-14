@@ -25,6 +25,7 @@
 .home-main .lecture-card__image { display:flex; align-items:center; background:#171b23; }
 .home-main .lecture-card__image img { height:auto; aspect-ratio:16 / 9; object-fit:contain; display:block; }
 .home-main .lecture-card__body { min-width:0; }
+.home-main .lecture-card + .lecture-card { margin-top:28px; }
 [data-mode="newbie"] .status-pill { background:#20382c; color:#8adbb0; }
 .wave-demo input { display:block; width:100%; accent-color:var(--crimson); margin:20px 0; }
 .wave-demo label { font-weight:600; }
