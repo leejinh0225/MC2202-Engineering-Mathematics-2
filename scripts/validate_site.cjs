@@ -4,6 +4,7 @@ let links=0;
 const lectures={
   'fourier-series.html':{pages:48, pairs:44, slug:'fourier', shared:[1,29,31,33,48], equations:200},
   'fourier-integrals-transforms.html':{pages:36, pairs:34, slug:'transforms', shared:[1,12,35], equations:150},
+  'pde-i.html':{pages:22, pairs:15, slug:'pde-i', shared:[1,6,7,8,11,18,20,22], equations:100},
 };
 for(const name of ['index.html','downloads.html',...Object.keys(lectures)]){
   const html=fs.readFileSync(path.join(root,name),'utf8');
@@ -62,4 +63,4 @@ for(const name of ['index.html','downloads.html',...Object.keys(lectures)]){
     }
   }
 }
-console.log(`SITE_VALIDATION_OK pages=4 slides=84 independent_reading_pairs=78 local_links=${links}`);
+console.log(`SITE_VALIDATION_OK pages=${Object.keys(lectures).length+2} slides=${Object.values(lectures).reduce((s,v)=>s+v.pages,0)} independent_reading_pairs=${Object.values(lectures).reduce((s,v)=>s+v.pairs,0)} local_links=${links}`);

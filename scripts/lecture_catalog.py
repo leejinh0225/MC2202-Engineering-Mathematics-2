@@ -3,7 +3,8 @@ from html import escape
 
 LECTURES = [
     dict(title='Fourier series(푸리에 급수)', pdf='Fourier series.pdf', page='fourier-series.html', slug='fourier', pages=48, problem='28', description='내적과 직교성에서 시작해 푸리에 급수, 함수 근사, Sturm–Liouville 문제와 일반화된 급수까지 상세 해설과 풀이로 연결합니다.'),
-    dict(title='Fourier integrals & transforms(푸리에 적분과 변환)', pdf='Fourier Integrals and Transforms.pdf', page='fourier-integrals-transforms.html', slug='transforms', pages=36, problem='11', description='급수가 적분으로 바뀌는 이유, 복소 푸리에 변환의 성질, 합성곱, DFT·FFT와 소리·진동 분석을 상세 풀이와 함께 연결합니다.')
+    dict(title='Fourier integrals & transforms(푸리에 적분과 변환)', pdf='Fourier Integrals and Transforms.pdf', page='fourier-integrals-transforms.html', slug='transforms', pages=36, problem='11', description='급수가 적분으로 바뀌는 이유, 복소 푸리에 변환의 성질, 합성곱, DFT·FFT와 소리·진동 분석을 상세 풀이와 함께 연결합니다.'),
+    dict(title='Partial differential equations I(편미분방정식 I)', pdf='PDE - I.pdf', page='pde-i.html', slug='pde-i', pages=22, problem='21', description='편미분의 뜻부터 변수분리와 D’Alembert 해법, 고정단 반사와 특성곡선까지 연결하고 삼각형 줄의 진동을 상세 풀이와 비교 그림으로 확인합니다.')
 ]
 
 def lecture_cards():

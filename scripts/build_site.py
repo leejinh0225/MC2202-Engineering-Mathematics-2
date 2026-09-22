@@ -94,8 +94,10 @@ if re.search(r'\{\{.*?\}\}',template):raise RuntimeError('Unresolved template to
 
 def shell(title,body):return '<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>'+title+' | MC2202</title><link rel="stylesheet" href="assets/css/styles.css"><link rel="stylesheet" href="assets/css/math-note.css?v=transforms-1"><script src="assets/js/mode-init.js"></script></head><body><header class="site-header"><div class="site-header__inner"><a class="wordmark" href="index.html">MC2202 Engineering Mathematics II</a><div class="header-actions"><a class="header-link" href="downloads.html">PDF 다운로드</a><button class="mode-toggle" id="mode-toggle" aria-pressed="false" type="button">뉴비 모드 켜기</button></div></div></header><section class="hero"><div class="hero__inner"><p class="eyebrow">공업수학 II · 강의자료 정리노트</p><h1>'+title+'</h1><p class="hero__lead">원본 자료와 한국어 해설, 단계별 문제 풀이를 이어 읽는 학습 노트.</p></div></section><main class="landing-content">'+body+'</main><footer class="site-footer"><div class="site-footer__inner">MC2202 · Engineering Mathematics II</div></footer><script src="assets/js/math-note.js" defer></script></body></html>'
 from build_transforms import build as build_transforms
+from build_pde import build as build_pde
 from lecture_catalog import LECTURES, lecture_cards, download_cards
 build_transforms()
+build_pde()
 (SITE/'index.html').write_text(render_home(shell,lecture_cards(),len(LECTURES)),encoding='utf-8')
 (SITE/'downloads.html').write_text(shell('원본 PDF 다운로드.',download_cards(SITE)),encoding='utf-8')
 vendor=SITE/'assets/vendor/katex'
