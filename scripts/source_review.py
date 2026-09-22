@@ -63,8 +63,8 @@ add(22,'error','복소 계수 유도에서 중복된 1/2',
     r'c_n=\frac{a_n-i b_n}{2}=\frac1{2\pi}\int_{-\pi}^{\pi}f(x)e^{-inx}\,dx\quad(n\ge1)',
     '이 자료에서 실수 계수 aₙ·bₙ의 적분 인자는 1/π입니다. 바깥 1/2를 곱해 1/(2π)가 됩니다. 원본 최종 cₙ 공식은 맞으며, c₀=a₀입니다.')
 add(23,'error','시간 주기의 실수 계수에 빠진 2',
-    '시간 주기 T의 aₙ·bₙ 적분 앞이 1/T로 적혀 있습니다.',
-    r'a_n=\frac2T\int_{t_0}^{t_0+T}f(t)\cos(n\omega_0t)\,dt,\qquad\omega_0=\frac{2\pi}T',
+    '시간 주기 T의 aₙ·bₙ 적분 앞이 1/T로 적혀 있습니다. 원본의 적분 구간은 −T/2부터 T/2까지입니다.',
+    r'a_n=\frac2T\int_{-T/2}^{T/2}f(t)\cos(n\omega_0t)\,dt,\qquad\omega_0=\frac{2\pi}T',
     'bₙ도 2/T를 사용합니다. f(t)=cos(ω₀t)를 대입하면 a₁=1이어야 하는데 1/T로 계산하면 1/2가 되어 검산에 실패합니다. 상수항 a₀와 복소 계수 cₙ의 1/T는 올바릅니다.')
 add(26,'caution','적분제곱오차와 평균제곱오차',
     '원본이 mean-square error라고 부르는 E에는 구간 길이로 나누는 인자가 없습니다.',

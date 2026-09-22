@@ -71,7 +71,7 @@ def populate(add, C, M, table):
     ], audit='원본 주파수 이동의 지수 e^ω₀t에는 i가 빠져 있습니다. 정의에 대입하면 eⁱω₀t가 맞습니다. 시간 이동 유도에서는 a와 t₀, f와 g가 혼용되어 t₀와 원래 함수 f로 통일하고, 지연 전 0이라는 서술에는 인과성 조건을 명시합니다.')
 
     add(22, 'Scaling(스케일 변환) · 좁은 신호와 넓은 스펙트럼', [
-        C('원본은 양의 λ에 대한 스케일 성질이다', M(r"g(t)=f(\lambda t),\quad\lambda>0\quad\Longrightarrow\quad G(\omega)=\frac1\lambda F\left(\frac\omega\lambda\right)"), M(r"u=\lambda t,\quad dt=\frac{du}\lambda\quad\Longrightarrow\quad G=\frac1{\lambda\sqrt{2\pi}}\int_{-\infty}^{\infty}f(u)e^{-i(\omega/\lambda)u}\,du")),
+        C('스케일 변환을 변수 치환으로 유도한다', M(r"g(t)=f(\lambda t),\quad\lambda>0\quad\Longrightarrow\quad G(\omega)=\frac1\lambda F\left(\frac\omega\lambda\right)"), M(r"u=\lambda t,\quad dt=\frac{du}\lambda\quad\Longrightarrow\quad G=\frac1{\lambda\sqrt{2\pi}}\int_{-\infty}^{\infty}f(u)e^{-i(\omega/\lambda)u}\,du")),
         C('폭과 높이가 함께 바뀐다', 'λ&gt;1이면 원래 변수에서 신호 폭은 1/λ배이고, 주파수 축에서는 폭이 λ배입니다. 변환의 높이에는 1/λ가 붙습니다. 음의 λ까지 확장하면 구간 방향 반전을 반영하여 1/|λ|를 사용합니다.', M(r"\mathcal F[f(\lambda t)](\omega)=\frac1{|\lambda|}F(\omega/\lambda),\qquad\lambda\ne0"), '이 페이지는 shift(이동)가 아니라 폭을 바꾸는 scaling(스케일 변환)입니다. 다음 합성곱에서도 치환으로 인한 배율을 주의해서 추적합니다.')
     ], [
         C('1 · f(2t)는 무엇이 두 배일까요?', 'f가 t=1에서 어떤 값을 가졌다면 f(2t)는 t=1/2에서 그 값을 갖습니다. 원래 그림을 가로로 절반으로 압축한 것입니다. 세로 높이를 두 배로 만든 2f(t)와는 다릅니다.'),

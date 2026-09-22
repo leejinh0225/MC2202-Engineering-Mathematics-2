@@ -58,7 +58,7 @@ def populate(add, C, M, table):
     ], audit='원본 등비급수 유도의 rᴺ 및 합 지표에 남아 있는 k·n 혼용을 정리했습니다. n=m일 때 N, 서로 다른 대표 번호일 때 0이라는 경우를 분리하고 r=1에 등비급수 분모 공식을 적용하지 않습니다.')
 
     add(28, 'DFT 행렬과 [0, 1, 4, 9]의 직접 계산', [
-        C('원본의 정규화 혼용을 구분한다', M(r"X_n=\sum_{k=0}^{N-1}f_ke^{-2\pi ink/N}=Nc_n,\qquad f_k=\frac1N\sum_{n=0}^{N-1}X_ne^{2\pi ink/N}"), '앞의 cₙ은 1/N이 붙는 계수입니다. 이 페이지의 원본 행렬·예제·뒤의 FFT는 1/N이 없는 Xₙ을 사용합니다. 두 규약을 분리하면 어느 숫자가 맞는지 명확해집니다.'),
+        C('두 정규화 규약의 계수를 비교한다', M(r"X_n=\sum_{k=0}^{N-1}f_ke^{-2\pi ink/N}=Nc_n,\qquad f_k=\frac1N\sum_{n=0}^{N-1}X_ne^{2\pi ink/N}"), '앞의 cₙ은 1/N이 붙는 계수입니다. 이 페이지의 원본 행렬·예제·뒤의 FFT는 1/N이 없는 Xₙ을 사용합니다. 두 규약을 분리하면 어느 숫자가 맞는지 명확해집니다.'),
         C('N=4의 변환 행렬', M(r"w=e^{-2\pi i/4}=-i,\qquad\begin{pmatrix}X_0\\X_1\\X_2\\X_3\end{pmatrix}=\begin{pmatrix}1&1&1&1\\1&-i&-1&i\\1&-1&1&-1\\1&i&-1&-i\end{pmatrix}\begin{pmatrix}0\\1\\4\\9\end{pmatrix}"), M(r"\begin{aligned}X_0&=0+1+4+9=14,\\X_1&=0-i-4+9i=-4+8i,\\X_2&=0-1+4-9=-6,\\X_3&=0+i-4-9i=-4-8i.\end{aligned}")),
         C('앞 페이지의 계수와 역변환 확인', M(r"(c_0,c_1,c_2,c_3)=\frac14(X_0,X_1,X_2,X_3)=\left(\frac72,-1+2i,-\frac32,-1-2i\right)"), M(r"f_0=\frac14[14+(-4+8i)-6+(-4-8i)]=0"), 'X₀는 표본의 합 14, c₀는 평균 3.5입니다. Fourier matrix(푸리에 행렬)를 W라 하면 W의 켤레전치와 W의 곱이 NI이고, 여기의 W는 대칭이므로 역행렬은 (1/N)conj(W)로도 쓸 수 있습니다.')
     ], [
