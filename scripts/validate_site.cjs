@@ -5,6 +5,7 @@ const lectures={
   'fourier-series.html':{pages:48, pairs:44, slug:'fourier', shared:[1,29,31,33,48], equations:200},
   'fourier-integrals-transforms.html':{pages:36, pairs:34, slug:'transforms', shared:[1,12,35], equations:150},
   'pde-i.html':{pages:22, pairs:15, slug:'pde-i', shared:[1,6,7,8,11,18,20,22], equations:100},
+  'pde-ii.html':{pages:22, pairs:13, slug:'pde-ii', shared:[1,4,9,10,11,13,14,15,19,20], equations:110},
 };
 for(const name of ['index.html','downloads.html',...Object.keys(lectures)]){
   const html=fs.readFileSync(path.join(root,name),'utf8');
