@@ -44,8 +44,12 @@ amps={1:1.2,2:-.4,5:.3}
 f=lambda x:sum(v*np.sin(n*np.pi*x/a) for n,v in amps.items())
 for n in range(1,12):
     close(2/a*integral(lambda x:f(x)*np.sin(n*np.pi*x/a),0,a),amps.get(n,0))
+# A_n form: A_n = 2/(a sinh(n pi b/a)) * int_0^a f sin(n pi x/a) dx
+A={n:2/(a*np.sinh(n*np.pi*b/a))*integral(lambda x:f(x)*np.sin(n*np.pi*x/a),0,a) for n in range(1,12)}
+for n in range(1,12):
+    close(A[n]*np.sinh(n*np.pi*b/a),amps.get(n,0))
 def rect(x,y):
-    return sum(v*np.sin(n*np.pi*x/a)*np.sinh(n*np.pi*y/a)/np.sinh(n*np.pi*b/a) for n,v in amps.items())
+    return sum(v*np.sin(n*np.pi*x/a)*np.sinh(n*np.pi*y/a) for n,v in A.items())
 for x in np.linspace(0,a,11):
     close(rect(x,0),0);close(rect(x,b),f(x))
 for y in np.linspace(0,b,11):
