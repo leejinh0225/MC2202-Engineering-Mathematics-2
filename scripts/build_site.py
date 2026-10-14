@@ -96,10 +96,12 @@ def shell(title,body):return '<!doctype html><html lang="ko"><head><meta charset
 from build_transforms import build as build_transforms
 from build_pde import build as build_pde
 from build_pde2 import build as build_pde2
+from build_pde3 import build as build_pde3
 from lecture_catalog import LECTURES, lecture_cards, download_cards
 build_transforms()
 build_pde()
 build_pde2()
+build_pde3()
 (SITE/'index.html').write_text(render_home(shell,lecture_cards(),len(LECTURES)),encoding='utf-8')
 (SITE/'downloads.html').write_text(shell('원본 PDF 다운로드.',download_cards(SITE)),encoding='utf-8')
 vendor=SITE/'assets/vendor/katex'
