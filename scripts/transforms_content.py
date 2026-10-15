@@ -105,7 +105,7 @@ add(9, '선형성과 도함수의 반구간 변환', [
 
 add(10, '도함수 변환을 부분적분으로 유도하기', [
     C('한 번 미분: 경계항을 먼저 쓴다', M(r"\begin{aligned}C[f']&=s[f(x)\cos(\omega x)]_0^\infty+s\omega\int_0^\infty f(x)\sin(\omega x)\,dx\\&=-s f(0)+\omega S[f],\\S[f']&=s[f(x)\sin(\omega x)]_0^\infty-s\omega\int_0^\infty f(x)\cos(\omega x)\,dx=-\omega C[f].\end{aligned}"), 'x=0에서 cos 0=1, sin 0=0입니다. 무한대에서는 f→0을 이용합니다. 부호는 부분적분의 빼기와 코사인 미분의 빼기가 만나는 위치로 확인합니다.'),
-    C('두 번 미분: f를 f′로 교체', M(r"\begin{aligned}C[f'']&=\omega S[f']-s f'(0)=-\omega^2C[f]-s f'(0),\\S[f'']&=-\omega C[f']=-\omega[\omega S[f]-s f(0)]\\&=-\omega^2S[f]+s\omega f(0).\end{aligned}"), 'f′에도 한 번 미분 공식을 적용하려면 f′의 무한대 경계항 역시 소멸해야 합니다. 원본 마지막 줄의 ω 제곱 누락은 이 대입 과정으로 확인됩니다.')
+    C('두 번 미분: f를 f′로 교체', M(r"\begin{aligned}C[f'']&=\omega S[f']-s f'(0)=-\omega^2C[f]-s f'(0),\\S[f'']&=-\omega C[f']=-\omega[\omega S[f]-s f(0)]\\&=-\omega^2S[f]+s\omega f(0).\end{aligned}"), 'f′에도 한 번 미분 공식을 적용하려면 f′의 무한대 경계항 역시 소멸해야 합니다.')
 ], [
     C('1 · 부분적분은 곱의 미분을 거꾸로 쓴 식입니다.', M(r"(uv)'=u'v+uv'\quad\Longrightarrow\quad\int u'v\,dx=uv-\int uv'\,dx"), '지금은 u=f, v=cos(ωx)로 두어 f′의 미분을 파동 쪽으로 옮깁니다. 그러면 원래 알고 싶은 C[f′]가 이미 정의한 S[f]와 연결됩니다. 계산의 목적이 “미분을 제거하기”라는 점을 먼저 잡으십시오.'),
     C('2 · 코사인 쪽을 한 항씩 계산합니다.', M(r"C[f']=s[f\cos(\omega x)]_0^\infty+s\omega\int_0^\infty f\sin(\omega x)\,dx"), '첫 항의 대괄호는 위끝 값에서 아래끝 값을 빼라는 뜻입니다. f가 무한대에서 0으로 가면 위끝은 0, 아래끝은 f(0)×1입니다. 따라서 −sf(0)이 남습니다. 둘째 항의 s∫f sin은 S[f] 그 자체입니다.', M(r"C[f']=-s f(0)+\omega S[f]")),
