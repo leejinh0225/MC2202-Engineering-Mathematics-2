@@ -6,18 +6,19 @@ LECTURES = [
     dict(title='Fourier integrals & transforms(푸리에 적분과 변환)', pdf='Fourier Integrals and Transforms.pdf', page='fourier-integrals-transforms.html', slug='transforms', pages=36, problem='11', description='급수가 적분으로 바뀌는 이유, 복소 푸리에 변환의 성질, 합성곱, DFT·FFT와 소리·진동 분석을 상세 풀이와 함께 연결합니다.'),
     dict(title='Partial differential equations I(편미분방정식 I)', pdf='PDE - I.pdf', page='pde-i.html', slug='pde-i', pages=22, problem='21', description='편미분의 뜻부터 변수분리와 D’Alembert 해법, 고정단 반사와 특성곡선까지 연결하고 삼각형 줄의 진동을 상세 풀이와 비교 그림으로 확인합니다.'),
     dict(title='Partial differential equations II(편미분방정식 II)', pdf='PDE - II.pdf', page='pde-ii.html', slug='pde-ii', pages=22, problem='18', description='열방정식·정상 직사각형·무한 막대의 열핵을 연결하고, 사각형 초기온도·구리 막대 냉각·삼각형 초기온도의 풀이를 기초 계산부터 완성합니다.'),
-    dict(title='Partial differential equations III(편미분방정식 III)', pdf='PDE  - III.pdf', page='pde-iii.html', slug='pde-iii', pages=22, problem='10', description='직사각형·원형 막의 진동에서 베셀 함수와 구 바깥 라플라스 문제까지, 공간 모드가 나오는 이유와 원본 문제의 계수 계산을 상세히 풉니다.')
+    dict(title='Partial differential equations III(편미분방정식 III)', pdf='PDE  - III.pdf', page='pde-iii.html', slug='pde-iii', pages=22, problem='10', description='직사각형·원형 막의 진동에서 베셀 함수와 구 바깥 라플라스 문제까지, 공간 모드가 나오는 이유와 원본 문제의 계수 계산을 상세히 풉니다.'),
+    dict(title='Complex numbers & functions(복소수와 복소함수)', pdf='Week 9 - 10.pdf', page='complex-numbers-functions.html', slug='complex-numbers-functions', pages=58, problem='55', week='Week 9–10', description='복소수 계산·극형식·근에서 복소미분·코시–리만 방정식과 로그·역함수의 가지까지, 기본·뉴비 해설과 원본 예제·연습문제의 상세 풀이로 연결합니다.')
 ]
 
 def lecture_cards():
     cards=[]
     for v in LECTURES:
-        cards.append(f'''<article class="lecture-card"><div class="lecture-card__body"><span class="status-pill">작성 완료</span><p class="section-kicker" style="margin-top:22px">공업수학 II · 날짜 미기재</p><h2>{escape(v['title'])}</h2><p>{v['description']}</p><div class="meta-row"><span class="meta-chip">원본 슬라이드 {v['pages']}장</span><span class="meta-chip">PDF 기반 해설</span><span class="meta-chip">기본·뉴비 모드</span></div><div class="button-row"><a class="button button--primary" href="{v['page']}">정리노트 읽기</a><a class="button" href="{v['page']}#slide-{v['problem']}">문제 풀이</a><a class="button" href="materials/{v['pdf']}" download="{v['pdf']}" type="application/pdf">원본 PDF 다운로드</a></div></div><div class="lecture-card__image"><img src="assets/slides/{v['slug']}/slide-01.jpg" alt="{escape(v['title'])} 원본 첫 페이지 표지 슬라이드" width="1920" height="1080"></div></article>''')
+        cards.append(f'''<article class="lecture-card"><div class="lecture-card__body"><span class="status-pill">작성 완료</span><p class="section-kicker" style="margin-top:22px">{escape(v.get('week','공업수학 II'))} · 날짜 미기재</p><h2>{escape(v['title'])}</h2><p>{v['description']}</p><div class="meta-row"><span class="meta-chip">원본 슬라이드 {v['pages']}장</span><span class="meta-chip">PDF 기반 해설</span><span class="meta-chip">기본·뉴비 모드</span></div><div class="button-row"><a class="button button--primary" href="{v['page']}">정리노트 읽기</a><a class="button" href="{v['page']}#slide-{v['problem']}">문제 풀이</a><a class="button" href="materials/{v['pdf']}" download="{v['pdf']}" type="application/pdf">원본 PDF 다운로드</a></div></div><div class="lecture-card__image"><img src="assets/slides/{v['slug']}/slide-01.jpg" alt="{escape(v['title'])} 원본 첫 페이지 표지 슬라이드" width="1920" height="1080"></div></article>''')
     return ''.join(cards)
 
 def download_cards(site):
     result=[]
     for v in LECTURES:
         size=(site/'materials'/v['pdf']).stat().st_size
-        result.append(f'''<div class="card"><h2>{escape(v['pdf'])}</h2><p>Arshad Afzal · {v['pages']}쪽 · {size:,} bytes · 주차·날짜 미기재</p><div class="button-row"><a class="button button--primary" href="materials/{v['pdf']}" download="{v['pdf']}" type="application/pdf">원본 PDF 다운로드</a><a class="button" href="{v['page']}">정리노트 읽기</a></div></div>''')
+        result.append(f'''<div class="card"><h2>{escape(v['pdf'])}</h2><p>Arshad Afzal · {v['pages']}쪽 · {size:,} bytes · {escape(v['week'])+' · 날짜 미기재' if 'week' in v else '주차·날짜 미기재'}</p><div class="button-row"><a class="button button--primary" href="materials/{v['pdf']}" download="{v['pdf']}" type="application/pdf">원본 PDF 다운로드</a><a class="button" href="{v['page']}">정리노트 읽기</a></div></div>''')
     return '<div class="note-stack">'+''.join(result)+'</div>'

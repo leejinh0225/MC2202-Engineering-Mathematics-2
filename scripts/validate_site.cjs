@@ -7,6 +7,7 @@ const lectures={
   'pde-i.html':{pages:22, pairs:15, slug:'pde-i', shared:[1,6,7,8,11,18,20,22], equations:100},
   'pde-ii.html':{pages:22, pairs:13, slug:'pde-ii', shared:[1,4,9,10,11,13,14,15,19,20], equations:110},
   'pde-iii.html':{pages:22, pairs:14, slug:'pde-iii', shared:[1,4,5,9,11,14,20,21,22], equations:160},
+  'complex-numbers-functions.html':{pages:58, pairs:58, slug:'complex-numbers-functions', shared:[1], equations:350},
 };
 for(const name of ['index.html','downloads.html',...Object.keys(lectures)]){
   const html=fs.readFileSync(path.join(root,name),'utf8');
