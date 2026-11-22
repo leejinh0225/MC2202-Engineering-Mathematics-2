@@ -98,12 +98,14 @@ from build_pde import build as build_pde
 from build_pde2 import build as build_pde2
 from build_pde3 import build as build_pde3
 from build_complex import build as build_complex
+from build_integration import build as build_integration
 from lecture_catalog import LECTURES, lecture_cards, download_cards
 build_transforms()
 build_pde()
 build_pde2()
 build_pde3()
 build_complex()
+build_integration()
 (SITE/'index.html').write_text(render_home(shell,lecture_cards(),len(LECTURES)),encoding='utf-8')
 (SITE/'downloads.html').write_text(shell('원본 PDF 다운로드.',download_cards(SITE)),encoding='utf-8')
 vendor=SITE/'assets/vendor/katex'
