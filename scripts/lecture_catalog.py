@@ -8,7 +8,8 @@ LECTURES = [
     dict(title='Partial differential equations II(편미분방정식 II)', pdf='PDE - II.pdf', page='pde-ii.html', slug='pde-ii', pages=22, problem='18', description='열방정식·정상 직사각형·무한 막대의 열핵을 연결하고, 사각형 초기온도·구리 막대 냉각·삼각형 초기온도의 풀이를 기초 계산부터 완성합니다.'),
     dict(title='Partial differential equations III(편미분방정식 III)', pdf='PDE  - III.pdf', page='pde-iii.html', slug='pde-iii', pages=22, problem='10', description='직사각형·원형 막의 진동에서 베셀 함수와 구 바깥 라플라스 문제까지, 공간 모드가 나오는 이유와 원본 문제의 계수 계산을 상세히 풉니다.'),
     dict(title='Complex numbers & functions(복소수와 복소함수)', pdf='Week 9 - 10.pdf', page='complex-numbers-functions.html', slug='complex-numbers-functions', pages=58, problem='55', week='Week 9–10', description='복소수 계산·극형식·근에서 복소미분·코시–리만 방정식과 로그·역함수의 가지까지, 기본·뉴비 해설과 원본 예제·연습문제의 상세 풀이로 연결합니다.'),
-    dict(title='Complex integration & Taylor and Laurent series(복소적분과 테일러·로랑 급수)', pdf='Week 11 - 12 (1).pdf', page='complex-integration-series.html', slug='complex-integration-series', pages=58, problem='24', week='Week 11–12', description='경로의 방향을 읽는 법부터 코시 적분공식, 수렴반경과 특이점 분류까지 배웁니다. 경로적분 3문제와 수열·급수 7문제의 풀이를 원본 그림과 함께 확인합니다.')
+    dict(title='Complex integration & Taylor and Laurent series(복소적분과 테일러·로랑 급수)', pdf='Week 11 - 12 (1).pdf', page='complex-integration-series.html', slug='complex-integration-series', pages=58, problem='24', week='Week 11–12', description='경로의 방향을 읽는 법부터 코시 적분공식, 수렴반경과 특이점 분류까지 배웁니다. 경로적분 3문제와 수열·급수 7문제의 풀이를 원본 그림과 함께 확인합니다.'),
+    dict(title='Residue integration(유수적분)', pdf='Week 13.pdf', page='residue-integration.html', slug='residue-integration', pages=18, problem='16', week='Week 13', description='로랑 급수의 유수에서 출발해 단위원·타원·반원 위의 적분과 코시 주값을 계산합니다. 원본 예제와 연습문제 3개의 중간 계산을 기본·뉴비 해설로 따라갑니다.')
 ]
 
 def lecture_cards():

@@ -1,53 +1,15 @@
 """Build the Week 11–12 lecture from the shared template and per-slide readings."""
 from html import escape
 from pathlib import Path
-import re
+from complex_lecture_layout import link, read_slides, render_lecture
 
 from complex_content import C, M, paths, table
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE = ROOT / 'site'
 SLUG = 'complex-integration-series'
 PDF = 'Week 11 - 12 (1).pdf'
 TITLE = 'Complex integration & Taylor and Laurent series'
 CONTENT = ('contours', 'cauchy', 'series', 'laurent')
-
-
-def read_slides():
-    slides = {}
-    for topic in CONTENT:
-        data = (ROOT / 'scripts' / f'integration_{topic}.txt').read_text(encoding='utf-8')
-        for block in re.split(r'^@@ ', data, flags=re.M)[1:]:
-            heading, *lines = block.strip().splitlines()
-            number, title = heading.split(' | ', 1)
-            n = int(number)
-            if n in slides:
-                raise ValueError(f'Duplicate slide {n}')
-            modes = {}
-            review = ''
-            for line in lines:
-                if line.startswith('! '):
-                    review = line[2:]
-                elif line.startswith(('= ', '~ ')):
-                    mode = line[0]
-                    modes[mode] = [escape(line[2:])]
-                elif line.startswith('$ '):
-                    modes[mode].append(M(line[2:]))
-                elif line.strip():
-                    modes[mode].append(escape(line))
-            standard = C(*modes['='])
-            body = standard if n == 1 else paths(standard, C(*modes['~']))
-            if review:
-                body = (f'<div class="callout source-review" id="source-check-{n:02}">'
-                        f'<h3>원본 표기 확인 · PDF {n}쪽</h3><p>{escape(review)}</p></div>') + body
-            slides[n] = title, body, review
-    if set(slides) != set(range(1, 59)):
-        raise ValueError('Expected 58 numbered source slides')
-    return slides
-
-
-def link(n, label):
-    return f'<a href="#slide-{n:02}">{escape(label)}</a>'
 
 
 def summary():
@@ -92,31 +54,22 @@ GLOSSARY = [
 
 
 def build():
-    slides = read_slides()
-    template = (SITE / 'templates/lecture-page.template.html').read_text(encoding='utf-8')
-    section = re.search(r'        <section class="source-section".*?</section>', template, re.S)
-    rendered = []
-    for n, (title, body, _) in sorted(slides.items()):
+    files = [ROOT / 'scripts' / f'integration_{topic}.txt' for topic in CONTENT]
+    slides = read_slides(files, 58)
+    extras = {}
+    roles = {}
+    for n in slides:
         if n == 17:
-            body += C('두 원에서 특이점의 위치 비교',
+            extras[n] = C('두 원에서 특이점의 위치 비교',
                       '<div class="transform-demo"><label for="contour-choice">적분 경로 <select id="contour-choice"><option value="origin">|z| = 2</option><option value="shifted">|z − i| = 1</option></select></label>'
                       '<canvas id="contour-plot" width="840" height="520" role="img" aria-describedby="contour-result" aria-label="원과 두 특이점의 상대 위치">원점 중심인 원은 두 점을, i 중심인 원은 위쪽 점만 감쌉니다.</canvas>'
                       '<p aria-live="polite" id="contour-result">|z| = 2 · 두 점 모두 내부 · 적분값 4πi</p></div>')
-        role = ('표지' if n == 1 else '원본 빈 풀이란 · 편집자 검산' if n == 26 else
+        roles[n] = ('표지' if n == 1 else '원본 빈 풀이란 · 편집자 검산' if n == 26 else
                 '연습문제 풀이' if 24 <= n <= 27 or n >= 53 else '개념·유도·예제')
-        subs = {'NN': f'{n:02}', 'SLIDE_ROLE': role, 'SLIDE_HEADING': escape(title),
-                'LECTURE_SLUG': SLUG, 'DESCRIPTIVE_ALT_TEXT': f'Week 11–12 원본 PDF {n}쪽 · '+escape(title),
-                'CURRENT_PAGE': str(n), 'PAGE_COUNT': '58', 'TRANSCRIPT_TIME_OR_SLIDE_ROLE': '원본 PDF · 한국어 해설과 풀이는 편집자 작성',
-                'SLIDE_EXPLANATION_BLOCKS': body}
-        rendered.append(re.sub(r'{{(\w+)}}', lambda m: subs[m[1]], section[0]))
-    template = template[:section.start()] + '\n'.join(rendered) + template[section.end():]
     exam = [
         ('When can a contour integral be computed from its endpoints?', 'If the integrand has an antiderivative on the domain, the integral equals the change in the antiderivative between the endpoints.', '정의역에서 원시함수를 찾으면 진행 방향을 확인하고 끝값에서 시작값을 뺍니다.'),
         ('Which derivative occurs for a fourth power in the denominator?', 'For a positively oriented simple closed contour enclosing the point, the third derivative appears, multiplied by two pi i and divided by three factorial, provided the numerator is analytic on and inside the contour.', '분모 차수에서 1을 빼면 도함수의 차수입니다.'),
         ('Why specify an annulus for a Laurent expansion?', 'A function can have different Laurent expansions about the same center on different annuli. Each expansion is unique on its own annulus.', '중심과 함께 수렴하는 환형 영역을 답에 씁니다.')]
-    pattern = r'            <div class="exam-card">.*?</p>\s*</div>'
-    exam_template = re.search(pattern, template, re.S)[0]
-    template = re.sub(pattern, lambda _: '\n'.join(exam_template.replace('{{EXAM_QUESTION}}', q).replace('{{MODEL_ANSWER}}', a).replace('{{KOREAN_ANSWER_EXPLANATION}}', k) for q,a,k in exam), template, count=1, flags=re.S)
     groups = [(2,'복소수값의 적분'),(7,'경로를 식으로 바꾸기'),(13,'닫힌 경로와 특이점'),(20,'코시 적분공식'),
               (24,'경로 연습 1–3'),(28,'수열·급수의 수렴'),(36,'거듭제곱급수와 반경'),(42,'테일러·맥클로린 급수'),
               (46,'로랑 급수와 특이점'),(53,'급수 연습 1–7')]
@@ -146,17 +99,8 @@ def build():
         'EXAM_SECTION_TITLE':'경로와 수렴 조건을 설명하는 영어 표현','BILINGUAL_GLOSSARY_TABLE':table(['English(한국어)','뜻과 사용'],GLOSSARY),
         'AUDIT_SECTION_TITLE':'원본 대조와 풀이 보강','ASR_CORRECTION_TABLE':audit,'SOURCE_LIST_AND_PROVENANCE_NOTE':sources,
         'TABLE_OF_CONTENTS_LINKS':''.join(f'<li><a href="#{anchor}">{label}</a></li>' for anchor,label in toc)}
-    template = re.sub(r'<span class="header-meta">.*?</span>', '<button type="button" class="mode-toggle" id="mode-toggle" aria-pressed="false">뉴비 모드 켜기</button>', template)
-    template = re.sub(r'{{([\w_]+)}}', lambda m: values[m[1]], template)
-    template = template.replace('MC2103 Dynamics','MC2202 Engineering Mathematics II').replace('| MC2103','| MC2202')
-    template = template.replace('이 부분만 읽어도 렉처의 핵심 정의, 개념 관계, 가정과 풀이 흐름을 이해할 수 있도록 작성합니다.', '적분에서는 경로의 방향과 내부 점을, 급수에서는 중심과 수렴 영역을 먼저 확인합니다.')
-    template = template.replace('Transcript audit','Source review').replace('<div class="page-shell">',guide+'<div class="page-shell">')
-    template = template.replace('</head>', '<link rel="stylesheet" href="assets/vendor/katex/katex.min.css"><link rel="stylesheet" href="assets/css/math-note.css?v=transforms-1"><link rel="stylesheet" href="assets/css/transforms.css"><script src="assets/js/mode-init.js"></script></head>')
-    template = template.replace('</body>','<script src="assets/js/math-note.js" defer></script><script src="assets/js/complex-contour.js" defer></script></body>')
-    template = re.sub(r'<!--.*?-->', '', template, flags=re.S)
-    if '{{' in template:
-        raise ValueError('Unresolved lecture template placeholder')
-    (SITE / f'{SLUG}.html').write_text('\n'.join(line.rstrip() for line in template.splitlines())+'\n', encoding='utf-8')
+    render_lecture(SLUG, slides, roles, extras, exam, values, guide,
+                   '적분에서는 경로의 방향과 내부 점을, 급수에서는 중심과 수렴 영역을 먼저 확인합니다.', 'complex-contour.js')
 
 
 if __name__ == '__main__':

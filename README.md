@@ -9,6 +9,7 @@
 - `site/pde-iii.html`: PDE III 원본 22쪽, 직사각형·원형 막의 진동, 베셀 함수·가중 계수, 구 바깥의 르장드르 급수 해와 원본 문제 상세 풀이. 일반·뉴비 본문 13쌍과 독립 요약, 원본 막 진동의 시간 조작 그림.
 - `site/complex-numbers-functions.html`: Week 9–10 원본 58쪽, 복소수·극형식·근·복소미분·CR·초등함수·가지 해설. 기본·뉴비 본문 57쌍과 독립 요약, 전체 원본 예제·연습문제 풀이, 1의 3·4·5제곱근 비교 그림.
 - `site/complex-integration-series.html`에 Week 11–12 원본 58쪽, 복소 경로적분과 테일러·로랑 급수, 두 모드의 원본 예제와 연습문제 10개 풀이를 수록했습니다.
+- `site/residue-integration.html`에 Week 13 원본 18쪽, 유수정리와 실수 적분·코시 주값, 연습문제 3개의 풀이와 타원 경로 그림을 수록했습니다.
 - 메인 목록은 원본 첫 페이지 썸네일과 정리노트·문제 풀이·PDF 다운로드를 각 자료에 제공합니다.
 - 기본 모드: 동역학 노트의 밝은 화면과 연속 스크롤 형식.
 - 뉴비 모드: 다크 화면과 독립적인 본문 해설. 고등학교 수학부터 개념의 필요성, 계산 선택 이유, 중간 과정, 최종 답까지 연결합니다. 핵심 영어 용어는 한국어와 함께 표기합니다.
@@ -45,7 +46,7 @@
 
 출력 사이트는 별도 빌드 없이 `site/` 자체를 정적 호스팅할 수 있습니다. 빌더 재실행에는 Python의 pypdf·Pillow, 수학 검산에는 NumPy가 필요합니다. 수식 빌더에는 공식 npm 패키지 KaTeX 0.16.22를 `tmp/katex/package`에 준비합니다. 배포 파일의 KaTeX 글꼴·CSS는 자체 포함하며 라이선스는 `site/assets/vendor/katex/LICENSE`에 있습니다.
 
-일곱 단원의 본문을 다시 만들고 검증하는 순서:
+여덟 단원의 본문을 다시 만들고 검증하는 순서:
 
 ```text
 python scripts/build_site.py
@@ -58,6 +59,7 @@ python scripts/verify_pde2.py
 python scripts/verify_pde3.py
 python scripts/verify_complex.py
 python scripts/verify_integration.py
+python scripts/verify_residues.py
 ```
 
 `prepare_sources.py`는 첫 자료용입니다. 새 PDF는 원본 파일명을 유지해 `site/materials/`에 보존하고, 각 자료별 이미지 폴더에 1920×1080 슬라이드를 만듭니다. 원본의 수식·부호 대조 기록은 `SOURCE_RECHECK.md`와 `TRANSFORMS_SOURCE_RECHECK.md`에 있습니다. MATLAB 예제는 같은 규약의 독립 DFT·NumPy 계산으로 교차 확인하며, MATLAB 실행 여부와 구분합니다.
@@ -67,6 +69,6 @@ PDE II의 원본 대조 내역과 수학·화면 검증 범위는 `PDE_II_SOURCE
 PDE III의 원본 대조 내역과 수학·화면 검증 범위는 `PDE_III_SOURCE_RECHECK.md`에 있습니다.
 Week 9–10의 원본 대조 내역과 수학·화면 검증 범위는 `COMPLEX_SOURCE_RECHECK.md`에 있습니다.
 
-원본 자료: Arshad Afzal, **Fourier series.pdf**, 48쪽; **Fourier Integrals and Transforms.pdf**, 36쪽; **PDE - I.pdf**, 22쪽; **PDE - II.pdf**, 22쪽; **PDE  - III.pdf**, 22쪽; **Week 9 - 10.pdf**, 58쪽. **Week 11 - 12 (1).pdf**, 58쪽. 마지막 두 자료의 주차는 파일명 기준이며 모든 강의 날짜는 미기재입니다. 원본의 권리는 원저작자에게 있습니다.
+원본 자료: Arshad Afzal, **Fourier series.pdf**, 48쪽; **Fourier Integrals and Transforms.pdf**, 36쪽; **PDE - I.pdf**, 22쪽; **PDE - II.pdf**, 22쪽; **PDE  - III.pdf**, 22쪽; **Week 9 - 10.pdf**, 58쪽. **Week 11 - 12 (1).pdf**, 58쪽. **Week 13.pdf**, 18쪽. 마지막 세 자료의 주차는 파일명 기준이며 모든 강의 날짜는 미기재입니다. 원본의 권리는 원저작자에게 있습니다.
 
 연결 대상 저장소: https://github.com/leejinh0225/MC2202-Engineering-Mathematics-2
